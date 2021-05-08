@@ -43,7 +43,7 @@ namespace FileConverterWebApiTest
             var result = _controller.ConvertJsonToXml();
             result.Should().BeOfType(typeof(FileStreamResult));
         }
-        
+
         [Test]
         public void XmlToJson_OK()
         {
@@ -52,7 +52,7 @@ namespace FileConverterWebApiTest
             var result = _controller.ConvertXmlToJson();
             result.Should().BeOfType(typeof(FileStreamResult));
         }
-        
+
         [Test]
         public void JsonToXml_NoFileProvided()
         {
@@ -61,7 +61,7 @@ namespace FileConverterWebApiTest
             var result = _controller.ConvertJsonToXml();
             result.Should().BeOfType(typeof(BadRequestResult));
         }
-        
+
         [Test]
         public void XmlToJson_NoFileProvided()
         {
@@ -70,7 +70,7 @@ namespace FileConverterWebApiTest
             var result = _controller.ConvertXmlToJson();
             result.Should().BeOfType(typeof(BadRequestResult));
         }
-        
+
         [Test]
         public void JsonToXml_Exception()
         {
@@ -78,13 +78,13 @@ namespace FileConverterWebApiTest
             _fileConverterMock
                 .Setup(x => x.Convert(It.IsAny<IFormFile>(), It.IsAny<FileFormat>(), It.IsAny<FileFormat>()))
                 .Throws(new Exception());
-            
+
             var result = _controller.ConvertJsonToXml();
             result.Should().BeOfType(typeof(StatusCodeResult));
             (result as StatusCodeResult).Should().BeEquivalentTo(new StatusCodeResult(500));
             _loggerMock.Invocations.Count.Should().Be(1);
         }
-        
+
         [Test]
         public void XmlToJson_Exception()
         {
@@ -112,7 +112,7 @@ namespace FileConverterWebApiTest
             return new ControllerContext(new ActionContext(httpContext, new RouteData(),
                 new ControllerActionDescriptor()));
         }
-        
+
         ControllerContext ContextWithoutFile()
         {
             var httpContext = new DefaultHttpContext();

@@ -22,7 +22,7 @@ namespace FileConverterWebApiTest
             _apiKeyMock.Setup(x => x.GetApiKey()).Returns("XXX");
             _module = new ApiKeyAuthorizationModule(hc => Task.CompletedTask);
         }
-        
+
         [Test]
         public void Request_DoesNotContainApiKeyHeader()
         {
@@ -31,7 +31,7 @@ namespace FileConverterWebApiTest
 
             ctx.Response.StatusCode.Should().Be(401);
         }
-        
+
         [Test]
         public void Request_DoContainWrongApiKeyHeader()
         {
@@ -41,7 +41,7 @@ namespace FileConverterWebApiTest
 
             ctx.Response.StatusCode.Should().Be(401);
         }
-        
+
         [Test]
         public void Request_OK()
         {
