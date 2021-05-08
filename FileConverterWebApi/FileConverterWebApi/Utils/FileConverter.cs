@@ -23,7 +23,6 @@ namespace FileConverterWebApi.Utils
     public class FileConverter : IFileConverter
     {
         readonly ILogger _logger;
-        readonly List<Type> _serializerAcceptedTypes = new List<Type> {typeof(Document)};
 
         public FileConverter(ILogger logger)
         {
