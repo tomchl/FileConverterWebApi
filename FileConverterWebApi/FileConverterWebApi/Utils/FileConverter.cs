@@ -19,11 +19,11 @@ namespace FileConverterWebApi.Utils
         Json,
         Xml
     }
-    
+
     public class FileConverter : IFileConverter
     {
         readonly ILogger _logger;
-        readonly List<Type> _serializerAcceptedTypes = new List<Type> { typeof(Document) };
+        readonly List<Type> _serializerAcceptedTypes = new List<Type> {typeof(Document)};
 
         public FileConverter(ILogger logger)
         {
@@ -74,26 +74,17 @@ namespace FileConverterWebApi.Utils
             {
                 var sourceStream = fileToConvert.OpenReadStream();
                 var reader = new StreamReader(sourceStream);
-                string input = reader.ReadToEnd();
-                var xdoc = XDocument.Parse(input);
+                var input = reader.ReadToEnd();
+                var doc = XDocument.Parse(input);
 
-                var typeToSerialize = _serializerAcceptedTypes.Find(x => x.Name == xdoc.Root.Name);
-
-                if (typeToSerialize != null)
-                {
-                    var doc = Activator.CreateInstance(typeToSerialize);
-                    foreach (var property in typeToSerialize.GetProperties())
+                if (doc.Root != null)
+                    return JsonConvert.SerializeObject(new Document
                     {
-                        var propertyValueFromXml = xdoc.Root.Element(property.Name).Value;
-                        if (propertyValueFromXml != default)
-                            property.SetValue(doc, propertyValueFromXml);
-                    }
-                    var serializedDoc = JsonConvert.SerializeObject(doc);
-                    return serializedDoc;
-                }
+                        Title = doc.Root.Element("Title")?.Value,
+                        Text = doc.Root.Element("Text")?.Value
+                    });
 
-                _logger.Log("Type inside xml is not supported");
-                return default; 
+                throw new ArgumentException();
             }
             catch (Exception ex)
             {

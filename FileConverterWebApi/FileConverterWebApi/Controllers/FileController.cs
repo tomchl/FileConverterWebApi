@@ -19,7 +19,7 @@ namespace FileConverterWebApi.Controllers
         }
 
         [HttpPost("convert/xmlToJson")]
-        public IActionResult ConvertXml()
+        public IActionResult ConvertXmlToJson()
         {
             try
             {
@@ -42,14 +42,13 @@ namespace FileConverterWebApi.Controllers
         }
 
         [HttpPost("convert/jsonToXml")]
-        public IActionResult ConvertJson()
+        public IActionResult ConvertJsonToXml()
         {
             try
             {
                 if (Request.Form.Files.Count > 0)
                 {
                     var file = Request.Form.Files[0];
-                    Console.WriteLine(file.FileName);
                     var serializedFile = _converter.Convert(file, FileFormat.Json, FileFormat.Xml);
                     return new FileStreamResult(new MemoryStream((Encoding.UTF8).GetBytes(serializedFile)),
                         "application/octet-stream");
